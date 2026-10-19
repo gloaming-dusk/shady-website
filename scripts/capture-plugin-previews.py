@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Regenerate genuine plugin screenshots with Shady's headless Automation API.
 
-Run from the repository root:
-    nix develop -c python3 website/scripts/capture-plugin-previews.py [plugin ...]
+Run against the built Shady checkout at ./shady, in Shady's development shell:
+    nix develop ./shady -c python3 scripts/capture-plugin-previews.py [plugin ...]
 Build the compositor, plugins, and headless client tools first (see README).
 """
 import os
@@ -12,10 +12,11 @@ import subprocess
 import sys
 import tempfile
 
-ROOT = Path(__file__).resolve().parents[2]
-SCENE = ROOT / "website/scripts/plugin-previews"
-OUTPUT = ROOT / "website/src/assets/plugins"
-NAMES = re.findall(r"name: '([^']+)'", (ROOT / "website/src/lib/plugins.ts").read_text())
+SITE = Path(__file__).resolve().parents[1]
+ROOT = (SITE / "shady").resolve()
+SCENE = SITE / "scripts/plugin-previews"
+OUTPUT = SITE / "src/assets/plugins"
+NAMES = re.findall(r"name: '([^']+)'", (SITE / "src/lib/plugins.ts").read_text())
 selected = sys.argv[1:] or NAMES
 if set(selected) - set(NAMES):
     raise SystemExit("Unknown plugin name")

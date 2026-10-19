@@ -1,5 +1,11 @@
 import { defineConfig } from 'astro/config';
 import { unified } from '@astrojs/markdown-remark';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+// The Shady checkout (or a symlink to one) whose docs/*.md and rice images
+// the site renders; the Pages workflow checks it out here.
+const shadyDir = path.resolve(fileURLToPath(new URL('.', import.meta.url)), 'shady');
 
 const docSlug = (value) =>
   value
@@ -29,6 +35,14 @@ export default defineConfig({
   // Set by the Pages workflow (includes any base path); used for absolute
   // canonical and social-card URLs. Optional for local builds.
   site: process.env.SITE_URL || undefined,
+  vite: {
+    resolve: {
+      alias: { '@shady': shadyDir }
+    },
+    server: {
+      fs: { allow: ['.', shadyDir] }
+    }
+  },
   markdown: {
     processor: unified({
       remarkPlugins: [rewriteRepositoryDocLinks]

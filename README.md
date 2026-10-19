@@ -2,17 +2,18 @@
 
 The project website is a static [Astro](https://astro.build/) site.
 
-Repository documentation is not duplicated into the site. The Astro content
-collection loads Markdown directly from `../docs/*.md`, and the docs routes
-render those files with site navigation and a generated table of contents.
+Shady's documentation is not duplicated into the site. The site renders a
+checkout of [gloaming-dusk/shady](https://github.com/gloaming-dusk/shady):
+the Astro content collection loads Markdown directly from its `docs/*.md`,
+and pages import the rice previews from its `rices/` through the `@shady`
+alias. The checkout is `./shady`, ignored by git; it can be a symlink to a
+Shady checkout elsewhere.
 
 ## Development
 
-From the repository root:
-
 ```sh
+git clone https://github.com/gloaming-dusk/shady   # or: ln -s ../shady shady
 nix develop
-cd website
 npm ci
 npm run dev
 ```
@@ -24,7 +25,16 @@ npm run check
 npm run build
 ```
 
-The static output is written to `website/dist/`.
+The static output is written to `dist/`.
+
+## Deployment
+
+The site is served at <https://gloaming-dusk.github.io/shady/>, so it deploys
+from the Shady repository: its `pages.yml` workflow checks out this repository
+and Shady, builds, and publishes. It runs when Shady's docs or rice previews
+change, daily, and by hand (`gh workflow run pages.yml -R gloaming-dusk/shady`)
+to publish a change here right away. This repository's `check.yml` only
+checks that the site builds.
 
 ## Content
 
@@ -44,24 +54,27 @@ in progress. `hello` and `counter` have no visual effect, so their previews
 show actual plugin logs; the counter scene also performs a stateful reload.
 Core modules are documented separately and do not have plugin screenshots.
 
-Regenerate all previews from the repository root:
+Regenerate all previews against a built Shady checkout, using Shady's
+development shell:
 
 ```sh
+cd shady
 nix develop
 ./tools/build.sh
 ninja -C build libshady-plugin-hello.so libshady-plugin-counter.so libshady-plugin-orbit-layout.so
-python3 website/scripts/capture-plugin-previews.py
+cd ..
+python3 scripts/capture-plugin-previews.py
 ```
 
 Pass plugin names to regenerate only selected previews:
 
 ```sh
-python3 website/scripts/capture-plugin-previews.py water-windows fps-cube
+python3 scripts/capture-plugin-previews.py water-windows fps-cube
 ```
 
 The capture script creates an isolated runtime directory for each compositor,
 uses software GLES2, and writes PNG originals to `src/assets/plugins/`. The
 scene configuration and automation are in `scripts/plugin-previews/`.
-The OBJ scene loads `assets/test-room.obj`. Full-size PNGs remain available
+The OBJ scene loads Shady's `assets/test-room.obj`. Full-size PNGs remain available
 by clicking each preview; Astro generates lazy-loaded WebP thumbnails for
 the cards. Regenerate captures after changes to plugin rendering or shaders.

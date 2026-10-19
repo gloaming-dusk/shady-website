@@ -4,7 +4,8 @@ import { glob } from 'astro/loaders';
 const docs = defineCollection({
   loader: glob({
     pattern: '*.md',
-    base: '../docs'
+    // The Shady checkout; see astro.config.mjs.
+    base: 'shady/docs'
   })
 });
 
