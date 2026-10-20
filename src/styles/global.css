@@ -482,6 +482,38 @@ p { text-wrap: pretty; }
 }
 
 .rice.neon .pip { background: #28e6ff; box-shadow: 0 0 0 3px rgba(40, 230, 255, 0.14), 0 0 14px rgba(40, 230, 255, 0.7); }
+.rice.horizon .pip { background: var(--lavender-soft); box-shadow: 0 0 0 3px rgba(205, 187, 255, 0.14), 0 0 14px rgba(205, 187, 255, 0.7); }
+.rice.objects .pip { background: #ff8a3d; box-shadow: 0 0 0 3px rgba(255, 138, 61, 0.16); border-radius: 3px; }
+.rice-body .tag {
+  margin-left: 2px;
+  padding: 3px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--amber-soft);
+  font: 600 0.68rem/1 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---------- Programs ---------- */
+
+.programs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.program { display: flex; flex-direction: column; gap: 10px; }
+.program h3 { margin: 0; font-size: 1.5rem; }
+.program h3 code { font: 700 1em/1.1 var(--mono); color: var(--text); background: none; border: 0; padding: 0; }
+.program p { margin: 0; color: var(--muted); }
+.program .program-role {
+  color: var(--amber-soft);
+  font: 700 0.72rem/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.program ul { margin: 4px 0 0; padding-left: 1.1em; color: var(--text-soft); display: grid; gap: 4px; }
+.program .program-link { margin-top: auto; padding-top: 8px; color: var(--amber-soft); font-weight: 600; }
 
 /* ---------- Code ---------- */
 
@@ -867,6 +899,7 @@ kbd {
   .two-col,
   .code-grid,
   .rices,
+  .programs,
   .cta { grid-template-columns: 1fr; }
   .card-grid { grid-template-columns: 1fr 1fr; }
   .section-head { grid-template-columns: 1fr; }

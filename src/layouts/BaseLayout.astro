@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import ogImage from '@shady/rices/afterglow/preview.jpg';
+import ogImage from '@shady/rices/horizon/preview.jpg';
 
 interface Props {
   title?: string;
@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = 'Shady — a 3D Wayland compositor',
-  description = 'An experimental 3D Wayland compositor built on wlroots, with native spatial rendering, Lua scripting, and a public C plugin API.',
+  title = 'Shady — a 3D Wayland compositor and its shell',
+  description = 'Shady is an experimental 3D Wayland compositor built on wlroots, and shady-shell the Lua-defined desktop shell that lives in its world.',
   path = Astro.url.pathname
 } = Astro.props;
 
@@ -69,7 +69,7 @@ const favicon =
           <a href="/getting-started/" aria-current={is('/getting-started') ? 'page' : undefined}>Getting started</a>
           <a href="/demo/afterglow/" aria-current={is('/demo') ? 'page' : undefined}>Demo</a>
           <a href="/plugins/" aria-current={is('/plugins') ? 'page' : undefined}>Plugins</a>
-          <a class="optional" href="https://gloaming-dusk.github.io/">Gloam</a>
+          <a class="optional" href="/#shell">Shell</a>
           <a class="optional" href="/docs/" aria-current={is('/docs') ? 'page' : undefined}>Docs</a>
           <a class="nav-github" href={repo}>
             <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
@@ -88,7 +88,7 @@ const favicon =
             <span class="brand-mark">S</span>
             <span>Shady</span>
           </a>
-          <p>An experimental 3D Wayland compositor. Grown from TinyWL, built on wlroots.</p>
+          <p>An experimental 3D Wayland compositor and its desktop shell. Grown from TinyWL, built on wlroots.</p>
         </div>
         <div class="footer-col">
           <h4>Start</h4>
@@ -105,12 +105,12 @@ const favicon =
             <li><a href="/docs/lua-api/">Lua API</a></li>
             <li><a href="/docs/c-plugin-api/">C plugin API</a></li>
             <li><a href="/docs/shader-api/">Shader API</a></li>
+            <li><a href="/docs/shell-lua-api/">Shell Lua API</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Project</h4>
           <ul>
-            <li><a href="https://gloaming-dusk.github.io/">Gloam, the distribution</a></li>
             <li><a href={repo}>Source</a></li>
             <li><a href={`${repo}/issues`}>Issues</a></li>
             <li><a href={`${repo}/blob/main/LICENSE`}>License</a></li>

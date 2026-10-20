@@ -5,8 +5,12 @@ export const docOrder = [
   'IPC_API',
   'SHELL_LUA_API',
   'SHELL_PLUGIN_API',
+  'SHELL_DESIGN',
+  'GREETER',
   'C_PLUGIN_API',
   'SHADER_API',
+  'ENVIRONMENT_API',
+  'PLUGIN_MANAGER',
   'ARCHITECTURE'
 ];
 
@@ -20,6 +24,9 @@ export const docLabels: Record<string, string> = {
   SHELL_DESIGN: 'Shell design',
   C_PLUGIN_API: 'C plugin API',
   SHADER_API: 'Shader API',
+  ENVIRONMENT_API: 'Environment API',
+  PLUGIN_MANAGER: 'Plugin manager',
+  GREETER: 'Greeter',
   ARCHITECTURE: 'Architecture'
 };
 

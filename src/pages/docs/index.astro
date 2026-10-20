@@ -11,12 +11,19 @@ const descriptions: Record<string, string> = {
   'headless-api': 'Deterministic input, timers, screenshots, and CI-oriented helpers.',
   'c-plugin-api': 'Native modules, opaque handles, hot reload, state migration, and render hooks.',
   'shader-api': 'Fullscreen passes and host-managed per-window shader replacement.',
+  'ipc-api': 'The Unix socket and shadyctl: query state, send commands, and follow events.',
+  'shell-lua-api': 'Widget trees, live command output, popups, layers, and shaders for shady-shell.',
+  'shell-plugin-api': 'Native shady-shell plugins that publish values, register actions, and draw widgets.',
+  'shell-design': 'How shady-shell and the compositor divide the desktop between them.',
+  greeter: 'The greetd login screen built from Shady and shady-shell, and its NixOS option.',
+  'environment-api': 'Static 3D environments, authored collision, and asset-loader plugins.',
+  'plugin-manager': 'Loading native plugins by name from Lua with shady.plugins.',
   architecture: 'Core ownership, plugin boundaries, capability resolution, and lifetime rules.'
 };
 ---
 <BaseLayout
   title="Documentation · Shady"
-  description="Shady API and architecture documentation."
+  description="Shady and shady-shell API and architecture documentation."
   path="/docs/"
 >
   <header class="page-hero">

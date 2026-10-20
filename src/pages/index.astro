@@ -2,6 +2,8 @@
 import { Code } from 'astro:components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HourVideo from '../components/HourVideo.astro';
+import horizonShot from '@shady/rices/horizon/preview.jpg';
+import objectsShot from '@shady/rices/objects/preview.jpg';
 import afterglowShot from '@shady/rices/afterglow/preview.jpg';
 import neonShot from '@shady/rices/neon-transit/preview.jpg';
 
@@ -46,10 +48,39 @@ const features = [
     icon: '<path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>'
   },
   {
-    kicker: 'Desktop',
-    title: 'A standalone shell',
-    body: 'shady-shell adds a taskbar, workspaces, launcher, window menu and quick settings over its own protocol, themeable per rice.',
+    kicker: 'Layers',
+    title: 'Panels in the 3D world',
+    body: 'Any layer-shell client, shady-shell or waybar alike, can be frosted, blurred or turned in perspective, and pointer input still lands where it is drawn.',
     icon: '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/>'
+  }
+];
+
+const programs = [
+  {
+    name: 'shady',
+    role: 'The compositor',
+    body: 'Owns the Wayland objects, the GPU, input and the 3D world. Turns xdg-shell windows into lit objects, or runs a plain scene graph with --safe.',
+    points: [
+      'Perspective GLES2 renderer, physics and first-person mode',
+      'Hot-reloadable C plugins with an ABI v2 state migration',
+      'config.lua + init.lua, an IPC socket and shadyctl',
+      'Headless automation under ASan and UBSan'
+    ],
+    docs: '/docs/lua-api/',
+    docsLabel: 'Lua API'
+  },
+  {
+    name: 'shady-shell',
+    role: 'The desktop shell',
+    body: 'A separate Wayland client that draws the desktop around the windows. Everything it shows is a Lua widget tree, and saving the file reloads it in place.',
+    points: [
+      'Bars, docks, launchers and control centers, one per output, HiDPI',
+      'A notification server, wrapped text and input-method typing',
+      'GLSL shaders over any widget, native shell plugins',
+      'Background and bottom layers for wallpapers and clocks'
+    ],
+    docs: '/docs/shell-lua-api/',
+    docsLabel: 'Shell Lua API'
   }
 ];
 
@@ -89,8 +120,9 @@ hook = api->render_hook_add(host,
       <p class="eyebrow">Wayland, with depth</p>
       <h1>A compositor for <span class="gradient-text">spatial desktops.</span></h1>
       <p class="lede">
-        Shady turns ordinary Wayland windows into objects in a shared 3D world —
-        and keeps a conventional scene-graph path for the days you just need to work.
+        Shady turns ordinary Wayland windows into objects in a shared 3D world, and
+        shady-shell draws the desktop around them — with a conventional scene-graph
+        path for the days you just need to work.
       </p>
       <div class="button-row">
         <a class="button primary" href="/getting-started/">Build Shady</a>
@@ -105,6 +137,35 @@ hook = api->render_hook_add(host,
       <div class="metrics">
         {metrics.map(([value, label]) => (
           <div class="metric"><strong>{value}</strong><span>{label}</span></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="shell">
+    <div class="shell">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Two programs</p>
+          <h2>A compositor and its shell.</h2>
+        </div>
+        <p>
+          The compositor and the shell are separate processes that talk over the
+          shady-shell protocol, so either can be swapped: run shady-shell's bar,
+          or waybar, or nothing at all.
+        </p>
+      </div>
+      <div class="programs">
+        {programs.map((program) => (
+          <article class="card program">
+            <p class="program-role">{program.role}</p>
+            <h3><code>{program.name}</code></h3>
+            <p>{program.body}</p>
+            <ul>
+              {program.points.map((point) => <li>{point}</li>)}
+            </ul>
+            <a class="program-link" href={program.docs}>{program.docsLabel} →</a>
+          </article>
         ))}
       </div>
     </div>
@@ -145,11 +206,28 @@ hook = api->render_hook_add(host,
           <h2>One compositor, different evenings.</h2>
         </div>
         <p>
-          A rice is a config, a Lua runtime layer and a few native plugins.
-          Two ship with the repository; both run nested or straight from a VT.
+          A rice is a compositor config, a Lua runtime layer, a shell.lua and a
+          few native plugins. Four ship with Shady; each runs nested or straight
+          from a VT, and Horizon is the default.
         </p>
       </div>
       <div class="rices">
+        <a class="rice horizon" href={`${repo}/tree/main/rices/horizon`}>
+          <img src={horizonShot.src} width={horizonShot.width} height={horizonShot.height} loading="lazy" alt="Horizon: the time written across a sunset sky, a workspace light on the horizon and a frosted control center turned in 3D" />
+          <div class="rice-body">
+            <h3><span class="pip"></span>Horizon <span class="tag">default</span></h3>
+            <p>shady-shell living in Afterglow's sky. The time is written across it, workspaces are lights on the horizon, notifications are words in the sky, and the launcher scatters applications as stars.</p>
+            <span class="rice-meta">no bar · 3D glass control center · constellation launcher · on GitHub ↗</span>
+          </div>
+        </a>
+        <a class="rice objects" href={`${repo}/tree/main/rices/objects`}>
+          <img src={objectsShot.src} width={objectsShot.width} height={objectsShot.height} loading="lazy" alt="Objects: a two-tile desk clock and a floating dock on a paper sunset, around a terminal framed as a card" />
+          <div class="rice-body">
+            <h3><span class="pip"></span>Objects</h3>
+            <p>Chunky, tactile cards on a flat paper sunset: a desk clock, a floating dock, a control center that leans like a remote and a launcher that fans out like a hand of cards.</p>
+            <span class="rice-meta">ink outlines · sticker notifications · card-deck launcher · on GitHub ↗</span>
+          </div>
+        </a>
         <a class="rice" href="/demo/afterglow/">
           <img src={afterglowShot.src} width={afterglowShot.width} height={afterglowShot.height} loading="lazy" alt="Afterglow: rounded glass windows above a sunset sea with a glitter path" />
           <div class="rice-body">
@@ -215,8 +293,8 @@ hook = api->render_hook_add(host,
           <pre><code>nix develop
 ./tools/build.sh
 
-# nested, with the Afterglow rice
-./rices/afterglow/run.sh</code></pre>
+# nested, with the default Horizon rice
+./rices/horizon/run.sh</code></pre>
         </div>
       </div>
     </div>

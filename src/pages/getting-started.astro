@@ -1,9 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const flakeSnippet = `{
+  inputs.shady.url = "github:gloaming-dusk/shady";
+
+  outputs = { nixpkgs, shady, ... }: {
+    nixosConfigurations.my-machine = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        shady.nixosModules.default
+        {
+          programs.shady.enable = true;
+          programs.shady.rice = "horizon";
+          programs.shady.greeter.enable = true;
+        }
+      ];
+    };
+  };
+}`;
 ---
 <BaseLayout
   title="Getting started · Shady"
-  description="Build and run Shady nested, in safe mode, or directly from a Linux VT."
+  description="Build and run Shady and shady-shell nested, in safe mode, from a Linux VT, or as a NixOS login session."
   path="/getting-started/"
 >
   <header class="page-hero">
@@ -53,7 +72,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <article class="step">
           <div>
             <h3>Pick a rice</h3>
-            <p>Each rice has nested and native launchers. Start with <a href="/demo/afterglow/">Afterglow</a> (<code>./rices/afterglow/run.sh</code>), or read one as a template for your own config.</p>
+            <p>A rice starts the compositor with <code>shady-shell</code> and a terminal. Start with Horizon, the default (<code>./rices/horizon/run.sh</code>), then try Objects, <a href="/demo/afterglow/">Afterglow</a> or Neon Transit, or read one as a template for your own config.</p>
           </div>
         </article>
       </div>
@@ -83,6 +102,25 @@ WLR_BACKENDS=wayland ./build/shady -s foot</code></pre>
         </aside>
       </div>
     </div>
+
+    <section class="section">
+      <div class="shell two-col">
+        <div>
+          <p class="eyebrow">NixOS</p>
+          <h2>Install it as a login session.</h2>
+          <p class="lede">
+            The flake's NixOS module adds a Shady session to any NixOS system:
+            the compositor, shady-shell, the rices and, if you like, the Shady
+            greeter for greetd.
+          </p>
+          <p><code>programs.shady.rice</code> picks the rice used for whatever you have not configured in <code>~/.config/shady/</code>: <code>horizon</code>, <code>objects</code>, <code>afterglow</code> or <code>neon-transit</code>. See the <a href="/docs/greeter/">greeter docs</a> for the login screen.</p>
+        </div>
+        <div class="code-window">
+          <div class="code-title">flake.nix</div>
+          <pre><code>{flakeSnippet}</code></pre>
+        </div>
+      </div>
+    </section>
 
     <section class="section">
       <div class="shell two-col">
