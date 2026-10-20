@@ -1,19 +1,40 @@
 ---
 /*
- * The Afterglow hero loop with hour chips that light up in step with the
- * footage. Boundaries are measured from hero.mp4 (17.1 s loop): each chip
- * switches at the midpoint of the on-screen cross-fade.
+ * A rice's hero loop with hour chips that light up in step with the
+ * footage. Both loops are recorded by the rice's capture.sh on the same
+ * schedule (17.1 s): each chip switches at the midpoint of the on-screen
+ * cross-fade.
  */
-import poster from '@shady/rices/afterglow/hero.jpg';
-import heroWebm from '@shady/rices/afterglow/hero.webm?url';
-import heroMp4 from '@shady/rices/afterglow/hero.mp4?url';
+import afterglowPoster from '@shady/rices/afterglow/hero.jpg';
+import afterglowWebm from '@shady/rices/afterglow/hero.webm?url';
+import afterglowMp4 from '@shady/rices/afterglow/hero.mp4?url';
+import horizonPoster from '@shady/rices/horizon/hero.jpg';
+import horizonWebm from '@shady/rices/horizon/hero.webm?url';
+import horizonMp4 from '@shady/rices/horizon/hero.mp4?url';
 
 interface Props {
+  rice?: 'horizon' | 'afterglow';
   controls?: boolean;
   tag?: string;
 }
 
-const { controls = false, tag = 'Live Wayland surfaces · GLES2 · one C plugin' } = Astro.props;
+const loops = {
+  horizon: {
+    poster: horizonPoster,
+    webm: horizonWebm,
+    mp4: horizonMp4,
+    label: 'Horizon: the time written across a procedural sky above the sea, a notification arriving and a frosted control center turned in 3D, while the sky drifts from golden hour through afterglow and blue hour to night'
+  },
+  afterglow: {
+    poster: afterglowPoster,
+    webm: afterglowWebm,
+    mp4: afterglowMp4,
+    label: 'Afterglow: live terminal windows float above a procedural sea while the sky drifts from golden hour through afterglow and blue hour to night'
+  }
+};
+
+const { rice = 'horizon', controls = false, tag = 'Live Wayland surfaces · GLES2 · one C plugin' } = Astro.props;
+const loop = loops[rice];
 
 const hours = [
   { id: 'golden', label: 'Golden hour' },
@@ -32,11 +53,11 @@ const hours = [
     preload="metadata"
     width="1280"
     height="720"
-    poster={poster.src}
-    aria-label="Afterglow: live terminal windows float above a procedural sea while the sky drifts from golden hour through afterglow and blue hour to night"
+    poster={loop.poster.src}
+    aria-label={loop.label}
   >
-    <source src={heroWebm} type="video/webm" />
-    <source src={heroMp4} type="video/mp4" />
+    <source src={loop.webm} type="video/webm" />
+    <source src={loop.mp4} type="video/mp4" />
   </video>
   <figcaption class="hour-bar">
     <ul class="hours" aria-label="Times of day in the loop">

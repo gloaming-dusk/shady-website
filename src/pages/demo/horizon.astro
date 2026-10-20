@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HourVideo from '../../components/HourVideo.astro';
+import golden from '@shady/rices/horizon/hour-golden-hour.jpg';
+import afterglow from '@shady/rices/horizon/hour-afterglow.jpg';
+import blue from '@shady/rices/horizon/hour-blue-hour.jpg';
+import night from '@shady/rices/horizon/hour-night.jpg';
+import notification from '@shady/rices/horizon/notification.jpg';
+import launcher from '@shady/rices/horizon/launcher.jpg';
+import control from '@shady/rices/horizon/control.jpg';
+
+const repo = 'https://github.com/gloaming-dusk/shady';
+
+const hours = [
+  { image: golden, name: 'Golden hour', note: 'the light is golden', color: '#ffcf8a' },
+  { image: afterglow, name: 'Afterglow', note: 'the sun is low', color: '#ffb070' },
+  { image: blue, name: 'Blue hour', note: 'the blue hour', color: '#ff9ec0' },
+  { image: night, name: 'Night', note: 'the stars are out', color: '#a9c1ff' }
+];
+
+const pieces = [
+  {
+    image: notification,
+    kicker: 'Notifications',
+    title: 'Words in the sky',
+    body: 'shady-shell is the notification server. A new one appears under the status line on a faint frosted card, and the control center keeps it under “Earlier”.',
+    alt: 'Horizon: a calendar notification, “Dinner on the terrace”, written in the sky under the status line'
+  },
+  {
+    image: launcher,
+    kicker: 'Launcher',
+    title: 'Name a star',
+    body: 'Super+D scatters every application across the sky as a star. Type, and the matching stars light up and join into a constellation; Tab moves along it, Enter launches.',
+    alt: 'Horizon: the launcher, with applications as stars across the sky and the matches for “e” joined into a constellation'
+  },
+  {
+    image: control,
+    kicker: 'Control center',
+    title: 'A slab of frosted glass',
+    body: 'Click the status line. The compositor blurs what is behind the panel and turns it towards the middle of the screen in 3D. It picks the hour, sets volume and brightness, and shows what is playing.',
+    alt: 'Horizon: the control center, a frosted glass panel turned in 3D, with the hour picker, sliders, toggles and the playing record'
+  }
+];
+
+const shortcuts: Array<[string[], string]> = [
+  [['Super', 'D'], 'Launcher: name a star'],
+  [['Super', 'T'], 'Drift to the next hour; the shell follows'],
+  [['Super', 'Shift', 'T'], 'Drift back to the previous hour'],
+  [['Super', 'Return'], 'Open a terminal'],
+  [['Super', '1–3'], 'Workspaces, the lights on the horizon'],
+  [['Super', 'Shift', '1–3'], 'Send the window to a workspace'],
+  [['Super', 'Shift', 'Esc'], 'Quit Shady']
+];
+---
+<BaseLayout
+  title="Horizon · Shady"
+  description="Horizon, Shady's default rice: shady-shell living in a procedural sky above the sea, with the time across the sky, notifications as words, a constellation launcher and a 3D glass control center."
+  path="/demo/horizon/"
+>
+  <header class="page-hero">
+    <div class="shell">
+      <p class="eyebrow">The default rice</p>
+      <h1><span class="gradient-text">Horizon</span></h1>
+      <p class="lede">
+        shady-shell living in <a href="/demo/afterglow/">Afterglow</a>'s sky. There is no
+        bar: the time is written across the sky, the workspaces are lights on the
+        horizon with their windows reflected in the sea below, and everything the
+        shell draws follows the sky through four hours of light.
+      </p>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="shell">
+      <HourVideo rice="horizon" controls tag="Recorded headless at 720p · 17 s loop" />
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">The shell</p>
+            <h2>Everything lives in the sky.</h2>
+          </div>
+          <p>
+            Each piece is a shady-shell popup defined in Lua, in one
+            <code>shell.lua</code>. The compositor adds what a client cannot do
+            on its own: blur behind the glass and the turn in 3D.
+          </p>
+        </div>
+        <div class="showcase">
+          {pieces.map((piece) => (
+            <figure class="showcase-item">
+              <img src={piece.image.src} width={piece.image.width} height={piece.image.height} loading="lazy" alt={piece.alt} />
+              <figcaption>
+                <span class="kicker">{piece.kicker}</span>
+                <h3>{piece.title}</h3>
+                <p>{piece.body}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Four hours</p>
+            <h2>The shell follows the light.</h2>
+          </div>
+          <p>
+            The Afterglow plugin publishes the sky's palette; Horizon's shell reads it,
+            so the clock, its line under it, the workspace lights and the window
+            frames cross-fade with the sky on <kbd>Super</kbd> + <kbd>T</kbd>.
+          </p>
+        </div>
+        <div class="phase-grid">
+          {hours.map((hour) => (
+            <figure class="phase" style={`--c: ${hour.color}`}>
+              <img src={hour.image.src} width={hour.image.width} height={hour.image.height} loading="lazy" alt={`Horizon at ${hour.name.toLowerCase()}`} />
+              <figcaption><span class="dot"></span>{hour.name}<span>· {hour.note}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="two-col">
+          <div>
+            <p class="eyebrow">Run it</p>
+            <h2>Nested, or as your session.</h2>
+            <p class="lede">
+              The launcher starts shady-shell and a terminal. On NixOS, Horizon is
+              what <code>programs.shady.enable</code> gives everyone who has not
+              written their own config.
+            </p>
+          </div>
+          <div class="code-window">
+            <div class="code-title">terminal</div>
+            <pre><code>nix develop
+./tools/build.sh
+./rices/horizon/run.sh
+
+# NixOS: the default rice
+programs.shady.rice = "horizon";</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Controls</p>
+            <h2>Under your fingers.</h2>
+          </div>
+          <p>Horizon keeps Afterglow's bindings; every one lives in Lua, so you can rebind any of them. Click the status line for the control center, and a window's reflection below the horizon to focus it.</p>
+        </div>
+        <table class="shortcuts">
+          <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+          <tbody>
+            {shortcuts.map(([keys, action]) => (
+              <tr>
+                <td>{keys.map((key, i) => <>{i > 0 && ' + '}<kbd>{key}</kbd></>)}</td>
+                <td>{action}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="cta">
+        <div>
+          <h2>Draw your own sky.</h2>
+          <p>Horizon is one <code>shell.lua</code> over Afterglow's world. Start from it, or from the shell's Lua API.</p>
+        </div>
+        <div class="button-row" style="margin-top: 0">
+          <a class="button primary" href="/docs/shell-lua-api/">Shell Lua API</a>
+          <a class="button" href={`${repo}/tree/main/rices/horizon`}>Rice source ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
