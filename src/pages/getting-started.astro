@@ -30,13 +30,34 @@ const flakeSnippet = `{
       <p class="eyebrow">Getting started</p>
       <h1>Run Shady without guessing.</h1>
       <p class="lede">
-        Start with a nested session, verify the compatibility path, then move to the
-        spatial renderer and finally native DRM/libinput when you are ready.
+        Try it in a window with one command. To build it yourself, start nested,
+        verify the compatibility path, then move to native DRM/libinput when you
+        are ready. The <a href="/docs/getting-started/">full guide</a> also covers
+        the keys and your own configuration.
       </p>
     </div>
   </header>
 
   <div class="page-content">
+    <section class="section">
+      <div class="shell two-col">
+        <div>
+          <p class="eyebrow">One command</p>
+          <h2>Try it in a window.</h2>
+          <p class="lede">
+            From any Wayland desktop with Nix, this builds Shady and opens Horizon
+            inside a window, with a terminal. Press <code>Super+Shift+/</code> to see
+            every shortcut of the session.
+          </p>
+          <p><code>SHADY_RICE=objects</code> in front picks another rice. Run from a text console, it starts full screen.</p>
+        </div>
+        <div class="code-window">
+          <div class="code-title">nix run</div>
+          <pre><code>nix run github:gloaming-dusk/shady
+SHADY_RICE=objects nix run github:gloaming-dusk/shady</code></pre>
+        </div>
+      </div>
+    </section>
     <div class="shell two-col">
       <div class="steps">
         <article class="step">

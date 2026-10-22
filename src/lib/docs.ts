@@ -1,4 +1,5 @@
 export const docOrder = [
+  'GETTING_STARTED',
   'API',
   'LUA_API',
   'HEADLESS_API',
@@ -11,10 +12,13 @@ export const docOrder = [
   'SHADER_API',
   'ENVIRONMENT_API',
   'PLUGIN_MANAGER',
-  'ARCHITECTURE'
+  'DESKTOP',
+  'ARCHITECTURE',
+  'DEVELOPMENT'
 ];
 
 export const docLabels: Record<string, string> = {
+  GETTING_STARTED: 'Getting started',
   API: 'API overview',
   LUA_API: 'Lua API',
   HEADLESS_API: 'Headless API',
@@ -27,7 +31,9 @@ export const docLabels: Record<string, string> = {
   ENVIRONMENT_API: 'Environment API',
   PLUGIN_MANAGER: 'Plugin manager',
   GREETER: 'Greeter',
-  ARCHITECTURE: 'Architecture'
+  DESKTOP: 'Desktop integration',
+  ARCHITECTURE: 'Architecture',
+  DEVELOPMENT: 'Development'
 };
 
 export function docStem(id: string) {

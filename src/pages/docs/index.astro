@@ -6,6 +6,7 @@ import { docLabel, docSlug, docSort } from '../../lib/docs';
 type DocEntry = CollectionEntry<'docs'>;
 const docs = (await getCollection('docs')).sort(docSort);
 const descriptions: Record<string, string> = {
+  'getting-started': 'Try it with one command, install it, learn the keys, and make it yours.',
   api: 'Choose between Lua, headless automation, C plugins, and shaders.',
   'lua-api': 'Runtime configuration, events, windows, workspaces, and automation hooks.',
   'headless-api': 'Deterministic input, timers, screenshots, and CI-oriented helpers.',
@@ -18,7 +19,9 @@ const descriptions: Record<string, string> = {
   greeter: 'The greetd login screen built from Shady and shady-shell, and its NixOS option.',
   'environment-api': 'Static 3D environments, authored collision, and asset-loader plugins.',
   'plugin-manager': 'Loading native plugins by name from Lua with shady.plugins.',
-  architecture: 'Core ownership, plugin boundaries, capability resolution, and lifetime rules.'
+  desktop: 'Render paths, the protocols clients and other bars use, and how shady-shell connects.',
+  architecture: 'Core ownership, plugin boundaries, capability resolution, and lifetime rules.',
+  development: 'Repository layout, build options, the module host, plugin reload, and the test suites.'
 };
 ---
 <BaseLayout
