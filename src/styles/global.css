@@ -484,6 +484,10 @@ p { text-wrap: pretty; }
 
 .rice.neon .pip { background: #28e6ff; box-shadow: 0 0 0 3px rgba(40, 230, 255, 0.14), 0 0 14px rgba(40, 230, 255, 0.7); }
 .rice.horizon .pip { background: var(--lavender-soft); box-shadow: 0 0 0 3px rgba(205, 187, 255, 0.14), 0 0 14px rgba(205, 187, 255, 0.7); }
+.rice.tide .pip { background: linear-gradient(135deg, #b4a0ff, #7cb7ff); box-shadow: 0 0 0 3px rgba(180, 160, 255, 0.14), 0 0 14px rgba(124, 183, 255, 0.6); }
+.rice.wide { grid-column: 1 / -1; }
+.card-grid .card.wide { grid-column: 1 / -1; }
+.rice.wide img { aspect-ratio: 21 / 9; object-position: top; }
 .rice.objects .pip { background: #ff8a3d; box-shadow: 0 0 0 3px rgba(255, 138, 61, 0.16); border-radius: 3px; }
 .rice-body .tag {
   margin-left: 2px;
@@ -495,6 +499,45 @@ p { text-wrap: pretty; }
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+/* ---------- Every day (Tide) ---------- */
+
+.everyday {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+.everyday-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+.everyday-list {
+  display: grid;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.everyday-list li { display: grid; gap: 4px; }
+.everyday-list strong { font-size: 1.05rem; }
+.everyday-list span { color: var(--muted); }
+@media (max-width: 860px) {
+  .everyday { grid-template-columns: 1fr; }
+}
+
+.tide-hero { margin: 0 0 8px; }
+.tide-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+}
+.tide-hero figcaption { margin-top: 10px; color: var(--faint); font: 0.78rem/1.5 var(--mono); }
 
 /* ---------- Showcase ---------- */
 

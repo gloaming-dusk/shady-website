@@ -6,6 +6,7 @@ import horizonShot from '@shady/rices/horizon/preview.jpg';
 import objectsShot from '@shady/rices/objects/preview.jpg';
 import afterglowShot from '@shady/rices/afterglow/preview.jpg';
 import neonShot from '@shady/rices/neon-transit/preview.jpg';
+import { tide } from '../lib/tide';
 
 const repo = 'https://github.com/gloaming-dusk/shady';
 
@@ -16,7 +17,14 @@ const metrics = [
   ['Lua 5.4', 'Config + runtime']
 ];
 
-const features = [
+const features: Array<{ kicker: string; title: string; body: string; icon: string; wide?: boolean }> = [
+  ...(tide ? [{
+    kicker: 'Tile',
+    wide: true,
+    title: 'A scrolling layout',
+    body: 'layout = "scrolling" tiles each workspace as a strip of columns that glides sideways, as in niri: touchpad swipes, workspace slides, and a 3D overview of the whole strip.',
+    icon: '<rect x="2" y="5" width="6" height="14" rx="1.5"/><rect x="9" y="5" width="6" height="14" rx="1.5"/><path d="M17 5h4M17 19h4M21 5v14"/>'
+  }] : []),
   {
     kicker: 'Render',
     title: 'A real perspective world',
@@ -77,11 +85,21 @@ const programs = [
       'Bars, docks, launchers and control centers, one per output, HiDPI',
       'A notification server, wrapped text and input-method typing',
       'GLSL shaders over any widget, native shell plugins',
-      'Background and bottom layers for wallpapers and clocks'
+      'Background and bottom layers for wallpapers and clocks',
+      ...(tide ? ['Lock screens with PAM, password and fingerprint at once'] : [])
     ],
     docs: '/docs/shell-lua-api/',
     docsLabel: 'Shell Lua API'
   }
+];
+
+const riceCount = tide ? 'Five' : 'Four';
+
+const everyday = [
+  ['Scrolling columns', 'niri\'s model and niri\'s keys: new windows open beside the focused one, and the strip glides to keep it on screen.'],
+  ['A whole shell', 'A glass bar with a minimap of the strip, control center, launcher with a calculator, power menu, OSD and notifications.'],
+  ['Lock and login', 'Its own lock screen, password and fingerprint at once, and a greeter for greetd that replaces your display manager.'],
+  ['Light when idle', 'Rendering on demand, a shell that repaints only what changed, and idle timeouts that a playing video holds back.']
 ];
 
 const luaSnippet = `-- config.lua — shape the compositor
@@ -171,6 +189,35 @@ hook = api->render_hook_add(host,
     </div>
   </section>
 
+  {tide && (
+    <section class="section" id="tide">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">For every day</p>
+            <h2>Tide: tiling, without leaving the depth.</h2>
+          </div>
+          <p>
+            Tide is the rice to live in: the scrolling layout under a quiet glass
+            shell, with everything a desktop needs, from the lock screen to the
+            login screen.
+          </p>
+        </div>
+        <div class="everyday">
+          <a class="everyday-shot" href="/demo/tide/">
+            <img src={tide.preview.src} width={tide.preview.width} height={tide.preview.height} loading="lazy" alt="Tide: three terminals in a strip of columns under a glass bar with a minimap of the strip, and a notification at the top right" />
+          </a>
+          <ul class="everyday-list">
+            {everyday.map(([title, body]) => (
+              <li><strong>{title}</strong><span>{body}</span></li>
+            ))}
+            <li class="everyday-link"><a href="/demo/tide/">See Tide →</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  )}
+
   <section class="section">
     <div class="shell">
       <div class="section-head">
@@ -186,7 +233,7 @@ hook = api->render_hook_add(host,
       </div>
       <div class="card-grid">
         {features.map((feature) => (
-          <article class="card">
+          <article class={feature.wide ? 'card wide' : 'card'}>
             <div class="card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={feature.icon} />
             </div>
@@ -207,11 +254,21 @@ hook = api->render_hook_add(host,
         </div>
         <p>
           A rice is a compositor config, a Lua runtime layer, a shell.lua and a
-          few native plugins. Four ship with Shady; each runs nested or straight
-          from a VT, and Horizon is the default.
+          few native plugins. {riceCount} ship with Shady; each runs nested or
+          straight from a VT, and Horizon is the default.
         </p>
       </div>
       <div class="rices">
+        {tide && (
+          <a class="rice tide wide" href="/demo/tide/">
+            <img src={tide.preview.src} width={tide.preview.width} height={tide.preview.height} loading="lazy" alt="Tide: terminals tiled in scrolling columns under a floating glass bar" />
+            <div class="rice-body">
+              <h3><span class="pip"></span>Tide <span class="tag">every day</span></h3>
+              <p>niri's scrolling columns and keys, a glass bar with a live minimap of the strip, a control center, launcher, lock screen and greeter of its own. Made to replace niri and its shell.</p>
+              <span class="rice-meta">scrolling layout · 3D strip overview · PAM lock · greeter theme</span>
+            </div>
+          </a>
+        )}
         <a class="rice horizon" href="/demo/horizon/">
           <img src={horizonShot.src} width={horizonShot.width} height={horizonShot.height} loading="lazy" alt="Horizon: the time written across a sunset sky, a workspace light on the horizon and a frosted control center turned in 3D" />
           <div class="rice-body">
