@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { tide } from '../../lib/tide';
+
+const repo = 'https://github.com/gloaming-dusk/shady';
+
+const pieces = tide
+  ? [
+      {
+        image: tide.overview,
+        kicker: 'Overview',
+        title: 'The whole strip, in depth',
+        body: 'Super+O pulls the camera back until every column is on screen, tilted a little so it reads as a row of panes. Click a window and the camera flies back into it.',
+        alt: 'Tide: the overview, the camera pulled back over three columns of terminals'
+      },
+      {
+        image: tide.control,
+        kicker: 'Control center',
+        title: 'Everything in one card',
+        body: 'Volume and brightness, Wi-Fi, Bluetooth, do not disturb, stay awake, the power profile, a region screenshot, what is playing, the notifications and the battery.',
+        alt: 'Tide: the control center, with sliders, toggles, a media card, a notification and the battery'
+      },
+      {
+        image: tide.launcher,
+        kicker: 'Launcher',
+        title: 'Apps, sums and commands',
+        body: 'Super+Space. Applications come ordered by how often you open them; “= 12*7” calculates and copies, “> cmd” runs a command, and “lock” or “suspend” find the session’s commands.',
+        alt: 'Tide: the launcher, matching “te” to Telescope, Terminal and Text Editor'
+      },
+      {
+        image: tide.lock,
+        kicker: 'Lock screen',
+        title: 'The shell’s own lock',
+        body: 'Over the same night sea, checked with PAM in a small helper. With a fingerprint reader it listens to the reader and the password field at once. A greeter theme for greetd matches it.',
+        alt: 'Tide: the lock screen, a large clock, the user’s initial and a password field over the night sea'
+      }
+    ].filter((piece) => piece.image)
+  : [];
+
+const shortcuts: Array<[string[], string]> = [
+  [['Super', '← / → or H / L'], 'Focus the column on that side'],
+  [['Super', 'Ctrl', '← / → or H / L'], 'Move the column'],
+  [['Super', '[ / ]'], 'Join or leave the neighbouring column'],
+  [['Super', 'R'], 'Step through ⅓, ½ and ⅔ of the screen'],
+  [['Super', 'F'], 'Fill the screen with the column'],
+  [['Super', 'C'], 'Centre the column'],
+  [['Super', 'V'], 'Float the window, or tile it again'],
+  [['Super', 'O'], 'Overview of the strip'],
+  [['Super', '1–9'], 'Go to a workspace; U / I, Page Up / Down, the wheel or a swipe step'],
+  [['Super', 'Space'], 'Launcher'],
+  [['Super', 'S'], 'Control center'],
+  [['Super', 'Alt', 'L'], 'Lock the screen'],
+  [['Super', 'Shift', '/'], 'Every key of the session']
+];
+---
+<BaseLayout
+  title="Tide · Shady"
+  description="Tide, Shady's everyday rice: niri's scrolling columns and keys under a glass shell with a minimap of the strip, a control center, launcher, lock screen and greeter."
+  path="/demo/tide/"
+>
+  <header class="page-hero">
+    <div class="shell">
+      <p class="eyebrow">The everyday rice</p>
+      <h1><span class="gradient-text">Tide</span></h1>
+      <p class="lede">
+        Windows tile in a strip of columns that scrolls sideways, as in niri, with
+        niri's keys, so moving over needs no relearning. Above it floats a quiet glass
+        shell: the workspaces with a live minimap of the strip, the clock, and
+        everything else one key away.
+      </p>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="shell">
+      {!tide && (
+        <section class="section">
+          <p class="lede">
+            Tide is on its way into Shady's main branch; until then it lives on the
+            <a href={`${repo}/tree/tide/rices/tide`}>tide branch</a>.
+          </p>
+        </section>
+      )}
+
+      {tide && (
+        <figure class="tide-hero">
+          <img src={tide.preview.src} width={tide.preview.width} height={tide.preview.height} alt="Tide: three terminals in a strip of columns, the third stacked in two, under a glass bar whose left island shows a minimap of the strip, with a notification at the top right" />
+          <figcaption>Recorded headless at 720p. The left island's minimap shows the strip's columns, the focused one lit, and the part on screen framed.</figcaption>
+        </figure>
+      )}
+
+      {tide && (
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">The shell</p>
+              <h2>Quiet until you need it.</h2>
+            </div>
+            <p>
+              One <code>shell.lua</code>. The shell repaints only what changed, and
+              only the short-lived centred panels get the compositor's frosted glass.
+            </p>
+          </div>
+          <div class="showcase">
+            {pieces.map((piece) => (
+              <figure class="showcase-item">
+                <img src={piece.image!.src} width={piece.image!.width} height={piece.image!.height} loading="lazy" alt={piece.alt} />
+                <figcaption>
+                  <span class="kicker">{piece.kicker}</span>
+                  <h3>{piece.title}</h3>
+                  <p>{piece.body}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="section">
+        <div class="two-col">
+          <div>
+            <p class="eyebrow">Run it</p>
+            <h2>Nested, or as your session.</h2>
+            <p class="lede">
+              Try it in a window first. On NixOS the module sets up the lock
+              screen's PAM services, the session's systemd target (so a polkit
+              agent and fcitx5 start with it) and, if you like, the greeter that
+              replaces your display manager.
+            </p>
+          </div>
+          <div class="code-window">
+            <div class="code-title">terminal</div>
+            <pre><code>nix develop
+./tools/build.sh
+./rices/tide/run.sh
+
+# NixOS
+programs.shady = {'{'}
+  enable = true;
+  rice = "tide";
+  greeter.enable = true;
+  greeter.theme = "tide";
+{'}'};</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Controls</p>
+            <h2>niri's keys.</h2>
+          </div>
+          <p>Every binding lives in Tide's <code>init.lua</code>; the layout commands are <a href="/docs/lua-api/"><code>shady.layout.*</code></a>. Three fingers on the touchpad scroll the strip sideways and change workspace up and down.</p>
+        </div>
+        <table class="shortcuts">
+          <thead><tr><th>Shortcut</th><th>Action</th></tr></thead>
+          <tbody>
+            {shortcuts.map(([keys, action]) => (
+              <tr>
+                <td>{keys.map((key, i) => <>{i > 0 && ' + '}<kbd>{key}</kbd></>)}</td>
+                <td>{action}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <div class="cta">
+        <div>
+          <h2>Tile your own way.</h2>
+          <p>The scrolling layout is a compositor setting any rice can use; Tide is one shell over it.</p>
+        </div>
+        <div class="button-row" style="margin-top: 0">
+          <a class="button primary" href="/docs/lua-api/">Lua API</a>
+          <a class="button" href={`${repo}/tree/${tide ? 'main' : 'tide'}/rices/tide`}>Rice source ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

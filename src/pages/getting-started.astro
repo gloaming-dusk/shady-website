@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { tide } from '../lib/tide';
 
 const flakeSnippet = `{
   inputs.shady.url = "github:gloaming-dusk/shady";
@@ -93,7 +94,7 @@ SHADY_RICE=objects nix run github:gloaming-dusk/shady</code></pre>
         <article class="step">
           <div>
             <h3>Pick a rice</h3>
-            <p>A rice starts the compositor with <code>shady-shell</code> and a terminal. Start with <a href="/demo/horizon/">Horizon</a>, the default (<code>./rices/horizon/run.sh</code>), then try Objects, <a href="/demo/afterglow/">Afterglow</a> or Neon Transit, or read one as a template for your own config.</p>
+            <p>A rice starts the compositor with <code>shady-shell</code> and a terminal. Start with <a href="/demo/horizon/">Horizon</a>, the default (<code>./rices/horizon/run.sh</code>), then try Objects, <a href="/demo/afterglow/">Afterglow</a> or Neon Transit, or read one as a template for your own config.{tide && <> To live in, <a href="/demo/tide/">Tide</a> tiles windows in scrolling columns with niri's keys (<code>./rices/tide/run.sh</code>).</>}</p>
           </div>
         </article>
       </div>
@@ -134,7 +135,7 @@ WLR_BACKENDS=wayland ./build/shady -s foot</code></pre>
             the compositor, shady-shell, the rices and, if you like, the Shady
             greeter for greetd.
           </p>
-          <p><code>programs.shady.rice</code> picks the rice used for whatever you have not configured in <code>~/.config/shady/</code>: <code>horizon</code>, <code>objects</code>, <code>afterglow</code> or <code>neon-transit</code>. See the <a href="/docs/greeter/">greeter docs</a> for the login screen.</p>
+          <p><code>programs.shady.rice</code> picks the rice used for whatever you have not configured in <code>~/.config/shady/</code>: <code>horizon</code>, <code>objects</code>, <code>afterglow</code>{tide ? <>, <code>neon-transit</code> or <code>tide</code></> : <> or <code>neon-transit</code></>}. See the <a href="/docs/greeter/">greeter docs</a> for the login screen{tide && <>; <code>programs.shady.greeter.theme = "tide"</code> gives it Tide's look</>}.</p>
         </div>
         <div class="code-window">
           <div class="code-title">flake.nix</div>
